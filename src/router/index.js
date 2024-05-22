@@ -14,14 +14,14 @@ const router = createRouter({
       component: () => import('../views/adminPage.vue'),
       children:[
         {
-          path: '/admin/importList',
-          name: 'importList',
-          // component: () => import('../views/adminPage.vue'),
+          path: '/admin/incoomeWrite',
+          name: 'incoomeWrite',
+          component: () => import('../views/components/incoomeWrite.vue'),
         },
         {
           path: '/admin/dataViews',
           name: 'dataViews',
-          // component: () => import('../views/adminPage.vue'),
+          component: () => import('../views/components/dataViews.vue'),
         },
       ]
     },

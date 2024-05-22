@@ -20,8 +20,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')" class="w-100">立即创建</el-button>
-
+                    <el-button type="primary" @click="submitForm('ruleForm')" class="w-100">立即{{ isRes?'注册':'登录' }}</el-button>
                     <el-button class="w-100 mt-1 ms-0" @click="isRes=!isRes">前往{{ isRes?'登录':'注册' }}</el-button>
                 </el-form-item>
             </el-form>
