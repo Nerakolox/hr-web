@@ -25,6 +25,23 @@ const router = createRouter({
         },
       ]
     },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import('../views/userPage.vue'),
+      children:[
+        {
+          path: '/user/incomeQuery',
+          name: 'incomeQuery',
+          component: () => import('../views/components/incomeQuery.vue'),
+        },
+        {
+          path: '/user/recruitInfo',
+          name: 'recruitInfo',
+          component: () => import('../views/components/recruitInfo.vue'),
+        },
+      ]
+    },
     // {
     //   path: '/',
     //   name: 'index',
