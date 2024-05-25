@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 import { ElMessage } from 'element-plus'
 
 const service = axios.create({
-  baseURL: 'http://axtl.cn:8086',
+  baseURL: 'http://120.48.103.226/api',
   timeout: 5000
 })
 

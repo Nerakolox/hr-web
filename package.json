@@ -1,6 +1,6 @@
 {
-  "name": "project-hr",
-  "version": "0.0.0",
+  "name": "实习生小助手",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
