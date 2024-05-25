@@ -15,7 +15,7 @@
                 <el-form-item label="验证码" prop="code">
                     <el-input v-model="ruleForm.code">
                         <template #append>
-                            <el-button>{{ getCode }}</el-button>
+                            <el-button @click="getAuthCode" :disabled="codeDisabled">{{ codeText }}</el-button>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -29,16 +29,21 @@
 </template>
   
 <script>
-import {appStore} from '../stores/store'
+import {appStore,userStore} from '../stores/store'
+import http from '../utils/axios'
+import Cookie from 'js-cookie'
 export default {
     data() {
         return {
-            getCode:'获取验证码',
+            codeText:'获取验证码',
+            codeDisabled:false,
+            countDown:0,
             isRes:false,
             ruleForm: {
                 name: '',
                 phone:'',
                 idCard:'',
+                code:''
             },
             rules: {
                 name: [
@@ -47,7 +52,7 @@ export default {
                 ],
                 phone: [
                     { required: true, message: '请输入手机号', trigger: 'blur' },
-                    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+                    // { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
                 ],
                 idCard: [
                     { required: true, message: '请输入身份证号码', trigger: 'blur' },
@@ -61,12 +66,77 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     console.log('submit!')
+                    if(this.isRes){//注册
+                        const query = {
+                            certificate:this.ruleForm.idCard,
+                            username:this.ruleForm.name,
+                            telephone:this.ruleForm.phone,
+                            authcode:this.ruleForm.code
+                        }
+                        http.post('/signup',query)
+                            .then(res=>{
+                                this.$router.push({path:'/user'})
+                            })
+                    }else{//登录
+                        const query = {
+                            telephone:this.ruleForm.phone,
+                            authcode:this.ruleForm.code
+                        }
+                        http.post('/login',query)
+                            .then(res=>{
+                                // console.log(res.data,Cookie)
+                                Cookie.set('token',res.data.token)
+                                
+                                userStore().writeUsername(res.data.username)
+                                userStore().writeTelephone(res.data.telephone)
+                                userStore().writeAdmin(res.data.admin)
+
+                                console.log(res.data,userStore())
+                                if(userStore().admin){
+                                    this.$router.push({path:'/admin'})
+                                }else{
+                                    this.$router.push({path:'/user'})
+                                }
+                                // this.$router.push({path:'/admin'})
+                            })
+                            .catch(err=>{
+
+                            })
+                    }
                 } else {
                     console.log('error submit!!')
                     return false
                 }
             })
         },
+        getAuthCode(){
+            var regex = /^1[3-9]\d{9}$/
+            if(regex.test(this.ruleForm.phone)){
+                http.get(`/sms?telephone=${this.ruleForm.phone}`)
+                    .then(res=>{
+                        // console.log(res)
+                    })
+                this.codeDisabled = true
+                this.countDown = 60
+                this.codeText=`请${this.countDown}秒后再试`
+                let interval = setInterval(() => {
+                    this.countDown--
+                    this.codeText=`请${this.countDown}秒后再试`
+                    if (this.countDown <= 0) {
+                        this.codeText='获取验证码'
+                        clearInterval(interval)
+                        this.codeDisabled = false
+                    }
+                }, 1000)
+            }else{
+                this.$message({
+                    message: '请检查手机号是否正确',
+                    type: 'error',
+                    duration: 5000,
+                    plain: true,
+                })
+            }
+        }
     }
 }
 </script>

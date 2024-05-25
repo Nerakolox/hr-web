@@ -16,14 +16,22 @@ export const appStore = defineStore('app', {
 
 export const userStore = defineStore('user', {
   state: () => ({
-    userName: '',
+    telephone: '',
+    username:'',
+    admin:false
   }),
   getters: {
     
   },
   actions: {
-    writeUserName(value) {
-      this.userName=value
+    writeUsername(value) {
+      this.username=value
+    },
+    writeTelephone(value) {
+      this.telephone=value
+    },
+    writeAdmin(value) {
+      this.admin=value
     },
   }
 })

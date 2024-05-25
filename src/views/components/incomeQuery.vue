@@ -7,10 +7,10 @@
                     <el-input v-model="ruleForm.idCard"></el-input>
                 </el-form-item>
                 <el-form-item prop="date">
-                    <el-date-picker class="w-100" v-model="ruleForm.date" type="month" placeholder="请选择日期"/>
+                    <el-date-picker class="w-100" v-model="ruleForm.date" value-format="YYYY-MM" type="month" placeholder="请选择日期"/>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="w-100" type="primary" plain>查询工作条</el-button>
+                    <el-button class="w-100" type="primary" plain @click="goQuery('ruleForm')">查询工资条</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -43,6 +43,7 @@
 </template>
   
 <script>
+import http from '../../utils/axios'
 export default {
     components:{
         
@@ -100,6 +101,42 @@ export default {
             const year = date.getFullYear()
             const month = date.getMonth() + 1
             return `${year}-${month.toString().padStart(2, '0')}`
+        },
+        goQuery(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    http.get(`/readsalary?certificate=${this.ruleForm.idCard}&date=${this.ruleForm.date}`)
+                        .then(res=>{
+                            this.incomeData=res.data
+                        })
+                        .catch(err=>{
+                            this.incomeData={
+                                Username: "-", // 姓名
+                                Certificate: "-", // 身份证号
+                                Telephone: "-", // 电话号码
+                                CreditCard: "-", // 银行卡号
+                                BasicSalary: "-", // 基本工资
+                                AttendanceRequired: "-", // 应出勤天数
+                                AttendanceActual: "-", // 实出勤天数
+                                WorkHour: "-", // 总工时
+                                Performance: "-", // 绩效
+                                Allowance: "-", // 津贴
+                                Subsidy: "-", // 补助
+                                OvertimeSalary: "-", // 加班工资
+                                Excitation: "-", // 正负激励
+                                Discipline: "-", // 违纪扣款
+                                Withholding: "-", // 代扣部分
+                                BackPayment: "-", // 补发扣
+                                ShouldSalary: "-", // 应发工资
+                                UtilitiesFee: "-", // 水电物业费
+                                Tax: "-", // 个税
+                                AdvanceSalary: "-", // 预支工资
+                                ActualSalary: "-", // 实发工资
+                                Date: "-", // 日期
+                            }
+                        })
+                }
+            })
         }
     }
 }

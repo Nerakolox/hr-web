@@ -15,6 +15,7 @@
 </template>
   
 <script>
+import {appStore,userStore} from '../stores/store'
 export default {
     components:{
         
@@ -25,8 +26,10 @@ export default {
         }
     },
     mounted(){
-        if(this.$route.path==='/admin'){
+        if(this.$route.path==='/admin'&&userStore().admin){
             this.$router.push({path:'/admin/incoomeWrite'})
+        }else{
+            this.$router.push({path:'/user'})
         }
     },
     beforeUnmount() {

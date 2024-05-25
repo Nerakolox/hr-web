@@ -138,63 +138,14 @@
   
 <script>
 import * as XLSX from 'xlsx'
-
+import http from '../../utils/axios'
 export default {
     components:{
         
     },
     data() {
         return {
-            tableData:[
-                {
-                    Username: "John Doe", // 姓名
-                    Certificate: "123456789012345678", // 身份证号
-                    Telephone: "1234567890", // 电话号码
-                    CreditCard: "1234 5678 9012 3456", // 银行卡号
-                    BasicSalary: 3000.50, // 基本工资
-                    AttendanceRequired: 22, // 应出勤天数
-                    AttendanceActual: 20, // 实出勤天数
-                    WorkHour: 160, // 总工时
-                    Performance: 0.85, // 绩效
-                    Allowance: 200.75, // 津贴
-                    Subsidy: 100.25, // 补助
-                    OvertimeSalary: 500.50, // 加班工资
-                    Excitation: 50.25, // 正负激励
-                    Discipline: -20.50, // 违纪扣款
-                    Withholding: 30.00, // 代扣部分
-                    BackPayment: -50.75, // 补发扣
-                    ShouldSalary: 3800.00, // 应发工资
-                    UtilitiesFee: 50.00, // 水电物业费
-                    Tax: 450.00, // 个税
-                    AdvanceSalary: 200.00, // 预支工资
-                    ActualSalary: 3200.00, // 实发工资
-                    Date: '2024-05', // 日期
-                },
-                {
-                    Username: "John Doe", // 姓名
-                    Certificate: "123456789012345678", // 身份证号
-                    Telephone: "1234567890", // 电话号码
-                    CreditCard: "1234 5678 9012 3456", // 银行卡号
-                    BasicSalary: 3000.50, // 基本工资
-                    AttendanceRequired: 22, // 应出勤天数
-                    AttendanceActual: 20, // 实出勤天数
-                    WorkHour: 160, // 总工时
-                    Performance: 0.85, // 绩效
-                    Allowance: 200.75, // 津贴
-                    Subsidy: 100.25, // 补助
-                    OvertimeSalary: 500.50, // 加班工资
-                    Excitation: 50.25, // 正负激励
-                    Discipline: -20.50, // 违纪扣款
-                    Withholding: 30.00, // 代扣部分
-                    BackPayment: -50.75, // 补发扣
-                    ShouldSalary: 3800.00, // 应发工资
-                    UtilitiesFee: 50.00, // 水电物业费
-                    Tax: 450.00, // 个税
-                    AdvanceSalary: 200.00, // 预支工资
-                    ActualSalary: 3200.00, // 实发工资
-                    Date: '2024-05', // 日期
-                },
-            ],
+            tableData:[],
             tableData2:[]
         }
     },
@@ -219,11 +170,20 @@ export default {
                 dangerouslyUseHTMLString: true,
                 callback: action => {
                     if(action=='confirm'){
-                        this.$message({
-                            type: 'success',
-                            message: `已上传`,
-                            plain: true,
-                        })
+                        const query = this.tableData
+                        // console.log(query)
+                        http.post('addsalary',query)
+                            .then(res=>{
+                                console.log(res)
+                                // console.log(this.tableData)
+                                this.$message({
+                                    type: 'success',
+                                    message: `已上传`,
+                                    plain: true,
+                                })
+                                this.tableData=[]
+                                this.tableData2=[]
+                            })
                     }else{}
                 }
             })
@@ -253,27 +213,27 @@ export default {
                     // 转换数据格式并添加日期
                     const formattedData = tableData.map((row) => {
                         const obj = {
-                            Username: row[0],
-                            Certificate: row[1],
-                            CreditCard: row[2],
-                            Telephone: row[3],
-                            BasicSalary: row[4],
-                            AttendanceRequired: row[5],
-                            AttendanceActual: row[6],
-                            WorkHour: row[7],
-                            Performance: row[8],
-                            Allowance: row[9],
-                            Subsidy: row[10],
-                            OvertimeSalary: row[11],
-                            Excitation: row[12],
-                            Discipline: row[13],
-                            Withholding: row[14],
-                            BackPayment: row[15],
-                            ShouldSalary: row[16],
-                            UtilitiesFee: row[17],
-                            Tax: row[18],
-                            AdvanceSalary: row[19],
-                            ActualSalary: row[20],
+                            Username: row[0].toString(),
+                            Certificate: row[1].toString(),
+                            CreditCard: row[2].toString(),
+                            Telephone: row[3].toString(),
+                            BasicSalary: row[4].toString(),
+                            AttendanceRequired: row[5].toString(),
+                            AttendanceActual: row[6].toString(),
+                            WorkHour: row[7].toString(),
+                            Performance: row[8].toString(),
+                            Allowance: row[9].toString(),
+                            Subsidy: row[10].toString(),
+                            OvertimeSalary: row[11].toString(),
+                            Excitation: row[12].toString(),
+                            Discipline: row[13].toString(),
+                            Withholding: row[14].toString(),
+                            BackPayment: row[15].toString(),
+                            ShouldSalary: row[16].toString(),
+                            UtilitiesFee: row[17].toString(),
+                            Tax: row[18].toString(),
+                            AdvanceSalary: row[19].toString(),
+                            ActualSalary: row[20].toString(),
                             Date: `${year}-${month}` // 添加当前年月
                         };
                         return obj

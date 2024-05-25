@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 import { ElMessage } from 'element-plus'
 
 const service = axios.create({
-  baseURL: 'https://api.example.com',
+  baseURL: 'http://axtl.cn:8086',
   timeout: 5000
 })
 
@@ -31,14 +31,14 @@ service.interceptors.response.use(
             ElMessage({
                 message: error.response.data.msg,
                 type: 'error',
-                showClose: true,
+                plain: true,
                 duration: 5000
             })
         } else {
             ElMessage({
                 message: '发生未知错误，请稍后再试',
                 type: 'error',
-                showClose: true,
+                plain: true,
                 duration: 5000
             })
         }
