@@ -1,0 +1,1 @@
+import{s as t}from"./axios-CcArrTKS.js";import{_ as o,c as r,o as s}from"./index-D3HcCBAl.js";const c={components:{},data(){return{}},mounted(){t.get("/readrecruit").then(e=>{})},beforeUnmount(){},methods:{}},n={class:"recruit"};function a(e,_,d,i,p,m){return s(),r("div",n)}const l=o(c,[["render",a],["__scopeId","data-v-832421bb"]]);export{l as default};
