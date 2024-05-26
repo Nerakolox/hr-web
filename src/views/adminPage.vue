@@ -8,6 +8,13 @@
                 <el-menu-item index="/admin/dataViews">
                     <span>信息管理</span>
                 </el-menu-item>
+                <el-menu-item >
+                    <el-upload ref="upload" class="upload-demo" accept="image/*" action="#" :limit="1" :auto-upload="true" :before-upload="beforeUploadImg" :show-file-list="false">
+                        <template #trigger>
+                            <div>上传招聘图片</div>
+                        </template>
+                    </el-upload>
+                </el-menu-item>
             </el-menu>
         </div>
         <RouterView style="flex-grow: 1;max-width: calc(100% - 240px);"/>
@@ -16,6 +23,7 @@
   
 <script>
 import {appStore,userStore} from '../stores/store'
+import http from '../utils/axios'
 export default {
     components:{
         
@@ -39,6 +47,41 @@ export default {
         changePage(key,keyPath){
             this.$router.push({path:key})
         },
+        beforeUploadImg(file){
+            this.readImg(file)
+            console.log(file)
+            return false
+        },
+        readImg(file){
+            // 创建一个 FileReader 对象
+            const reader = new FileReader()
+
+            // 设置读取完成后的回调函数
+            let query={
+                img:''
+            }
+            reader.onload = (event)=>{
+                const base64Data = event.target.result
+                // console.log("Base64 编码:", base64Data)
+                query={
+                    img:`${base64Data}`
+                }
+                // return {img:base64Data}
+                http.post('/uploadimage',query)
+                    .then(res=>{
+                        this.$message({
+                            message: res.msg,
+                            type: 'success',
+                            duration: 5000,
+                            plain: true,
+                        })
+                    })
+                console.log('query',query)
+            }
+            reader.readAsDataURL(file)
+            console.log('query',query)
+            
+        }
     }
 }
 </script>

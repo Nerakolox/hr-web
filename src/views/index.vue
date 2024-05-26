@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 d-flex justify-content-center align-items-center" style="height: 100vh;">
         <div class="log-res-box" style="box-shadow: var(--el-box-shadow-dark);">
-            <h4 class="text-center mt-3">欢迎来到XX平台</h4>
+            <h4 class="text-center mt-3">实习生小助手</h4>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="top" style="width: 100%;">
                 <el-form-item v-if="isRes" label="姓名" prop="name">
                     <el-input v-model="ruleForm.name"></el-input>
@@ -75,7 +75,7 @@ export default {
                         }
                         http.post('/signup',query)
                             .then(res=>{
-                                this.$router.push({path:'/user'})
+                                this.isRes=false
                             })
                     }else{//登录
                         const query = {
@@ -91,7 +91,7 @@ export default {
                                 userStore().writeTelephone(res.data.telephone)
                                 userStore().writeAdmin(res.data.admin)
 
-                                console.log(res.data,userStore())
+                                // console.log(res.data,userStore())
                                 if(userStore().admin){
                                     this.$router.push({path:'/admin'})
                                 }else{
