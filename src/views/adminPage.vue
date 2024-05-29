@@ -6,10 +6,10 @@
                     <span>工资录入系统</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/dataViews">
-                    <span>招聘信息管理</span>
+                    <span>用户信息管理</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/recruitInfos">
-                    <span>用户信息管理</span>
+                    <span>招聘信息管理</span>
                 </el-menu-item>
                 <!-- <el-menu-item >
                     <el-upload ref="upload" class="upload-demo" accept="image/*" action="#" :limit="1" :auto-upload="true" :before-upload="beforeUploadImg" :show-file-list="false">
