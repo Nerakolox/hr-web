@@ -3,18 +3,21 @@
         <div style="width: 240px;min-height: 240px !important;">
             <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="changePage" style="height: 100vh;">
                 <el-menu-item index="/admin/incoomeWrite">
-                    <span>工资录入</span>
+                    <span>工资录入系统</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/dataViews">
-                    <span>信息管理</span>
+                    <span>招聘信息管理</span>
                 </el-menu-item>
-                <el-menu-item >
+                <el-menu-item index="/admin/recruitInfos">
+                    <span>用户信息管理</span>
+                </el-menu-item>
+                <!-- <el-menu-item >
                     <el-upload ref="upload" class="upload-demo" accept="image/*" action="#" :limit="1" :auto-upload="true" :before-upload="beforeUploadImg" :show-file-list="false">
                         <template #trigger>
                             <div>上传招聘图片</div>
                         </template>
                     </el-upload>
-                </el-menu-item>
+                </el-menu-item> -->
             </el-menu>
         </div>
         <RouterView style="flex-grow: 1;max-width: calc(100% - 240px);"/>

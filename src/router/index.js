@@ -23,6 +23,11 @@ const router = createRouter({
           name: 'dataViews',
           component: () => import('../views/components/dataViews.vue'),
         },
+        {
+          path: '/admin/recruitInfos',
+          name: 'recruitInfos',
+          component: () => import('../views/components/recruitInfos.vue'),
+        },
       ]
     },
     {
