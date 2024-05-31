@@ -20,7 +20,8 @@
 <script>
 import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-  
+import http from '../../utils/axios'
+import Cookies from 'js-cookie'
 export default {
     components: { 
         Editor,Toolbar 
@@ -29,16 +30,33 @@ export default {
         return {
             html: '<p>hello</p>',
             toolbarConfig: {},
-            editorConfig: { 
-                placeholder: '请输入内容...',
-                uploadImgServer: 'https://imgbb.com/json'
+            editorConfig: {
+                MENU_CONF:{
+                    uploadImage:{
+                        placeholder: '请输入内容...',
+                        server: `${http.defaults.baseURL}/awa`,
+                        fieldName: 'file',
+                        maxFileSize: 10 * 1024 * 1024,
+                        maxNumberOfFiles: 10,
+                        allowedFileTypes: ['image/*'],
+                        headers: {
+                            Authorization:`Bearer ${Cookies.get('token')}`
+                        },
+                        withCredentials: true,
+                        timeout: 60 * 1000,
+                    }
+                }
             },
             mode: 'simple', // or 'simple'default
             editorRef: null,
         }
     },
-    monuted(){
-        console.log(this.editorRef)
+    mounted(){
+        // console.log(this.editorRef)
+        // console.log(this.editorConfig)
+    },
+    created(){
+        
     },
     methods: {
         onEditorCreated(editor) {

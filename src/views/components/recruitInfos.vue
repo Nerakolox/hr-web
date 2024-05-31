@@ -22,6 +22,7 @@
                 <div class="d-flex justify-content-between h-100">
                     <div style="margin-right: 100px;height: 100%;position: relative;">
                         <el-input class="mb-1" v-model="title" placeholder="请输入标题"></el-input>
+                        <el-input class="mb-1" v-model="disc" placeholder="请输入概览"></el-input>
                         <EDITOR @inputing="inputing"></EDITOR>
                         <small class="text-muted w-100 text-end" style="position: absolute;bottom: 0px;">*手机阅览效果可能与真实展示样式有出入</small>
                     </div>
@@ -53,7 +54,8 @@ export default {
             // img:''
             title:'',
             drawer:false,
-            content:''
+            content:'',
+            disc:''
         }
     },
     mounted(){
