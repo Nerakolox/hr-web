@@ -34,7 +34,7 @@ export default {
                 MENU_CONF:{
                     uploadImage:{
                         placeholder: '请输入内容...',
-                        server: `${http.defaults.baseURL}/awa`,
+                        server: `${http.defaults.baseURL}/upload/image`,
                         fieldName: 'file',
                         maxFileSize: 10 * 1024 * 1024,
                         maxNumberOfFiles: 10,
@@ -56,7 +56,7 @@ export default {
         // console.log(this.editorConfig)
     },
     created(){
-        
+
     },
     methods: {
         onEditorCreated(editor) {
