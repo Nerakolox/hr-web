@@ -1,19 +1,19 @@
 <template>
     <div class="recruit p-2">
         <h5 class="p-3">招聘市场</h5>
-        <div style="height: 100%;"v-infinite-scroll="load" :infinite-scroll-disabled="noMore">
-            <div v-for="(item,index) in recruits" :key="index">
+        <div style="height: 100%;" v-infinite-scroll="load" :infinite-scroll-disabled="noMore">
+            <div v-for="(item,index) in recruits" :key="item.id">
                 <el-card class="mb-2 recruit-card" style="width: 100%" shadow="hover" @click="showRecruit(item)">
                     <div class="d-flex flex-column">
-                        <h5 style="font-size: 120%;">标题</h5>
-                        <div>描述</div>
+                        <h5 style="font-size: 120%;">{{ item.title }}</h5>
+                        <div>{{ item.summary }}</div>
                     </div>
                 </el-card>
             </div>
         </div>
         
         <p v-if="loading">Loading...</p>
-        <p v-if="noMore">No more</p>  
+        <p v-if="this.page<this.totalpages">No more</p>  
         
     </div>
 
@@ -42,26 +42,28 @@ export default {
     },
     data() {
         return {
-            img:'',
-            recruits:10,
+            recruits:[],
             shows:{
-                title:'标题信息 标题信息',
-                time:'2024-04-04',
-                disc:'描述，这个是描述，描述信息',
-                content:`<p>主要内容主要内容</p>`
+                title:'',
+                time:'',
+                disc:'',
+                content:``
             },
             drawer:false,
             page:1,
             loading:false,
-            noMore:false,
+            totalpages:-1
         }
     },
     mounted(){
-        // http.get('/readrecruit')
-        //     .then(res=>{
-        //         console.log(res)
-        //         this.img=res.data
-        //     })
+        http.get(`/readrecruit?page=${this.page}`)
+            .then(res=>{
+                // console.log(res.data)
+                this.recruits=res.data
+                this.totalpages=res.totalpages
+                // console.log(this.totalpages)
+            })
+
     },
     beforeUnmount() {
     
@@ -69,20 +71,52 @@ export default {
     methods:{
         showRecruit(item){
             this.drawer=true
+            http.get(`/readrecruit?id=${item.id}`)
+                .then(res=>{
+                    // console.log(res.data)
+                    this.shows={
+                        title:res.data.title,
+                        time:res.data.UpdatedAt,
+                        disc:res.data.summary,
+                        content:res.data.content
+                    }
+                })
         },
         goBack(){
             this.drawer=false
         },
         load(){
-            if (!this.loading && !this.noMore){
-                console.log(this.page)
+            if (!this.loading && this.page<this.totalpages){
                 this.loading=true
-                setTimeout(() => {
-                    this.recruits += 10
-                    this.loading = false
-                }, 2000)
+                this.page++
+                console.log(this.page)
+                http.get(`/readrecruit?page=${this.page}`)
+                    .then(res=>{
+                        // console.log(res.data)
+                        res.data.forEach(item=>{
+                            this.recruits.push(item)
+                        })
+                        this.totalpages=res.totalpages
+                        this.$nextTick(()=>{
+                            this.loading = false
+                        })
+                    })
+                // setTimeout(() => {
+                    // this.recruits += 10
+                // }, 2000)
             }
-            
+        }
+    },
+    watch:{
+        drawer(newVal){
+            if(newVal===false){
+                this.shows={
+                    title:'',
+                    time:'',
+                    disc:'',
+                    content:``
+                }
+            }
         }
     }
 }

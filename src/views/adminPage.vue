@@ -8,7 +8,7 @@
                 <el-menu-item index="/admin/dataViews">
                     <span>用户信息管理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/recruitInfos">
+                <el-menu-item index="/admin/editRecruitInfos">
                     <span>招聘信息管理</span>
                 </el-menu-item>
                 <!-- <el-menu-item >

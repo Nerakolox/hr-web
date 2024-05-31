@@ -24,9 +24,9 @@ const router = createRouter({
           component: () => import('../views/components/dataViews.vue'),
         },
         {
-          path: '/admin/recruitInfos',
-          name: 'recruitInfos',
-          component: () => import('../views/components/recruitInfos.vue'),
+          path: '/admin/editRecruitInfos',
+          name: 'editRecruitInfos',
+          component: () => import('../views/components/editRecruitInfos.vue'),
         },
       ]
     },
