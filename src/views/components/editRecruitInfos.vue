@@ -12,6 +12,7 @@
                     <div>{{ item.summary }}</div>
                 </div>
                 <div>
+                    <div><small class="d-flex align-items-center" style="font-size: 80%;"><el-icon><View /></el-icon>{{  item.click  }}</small></div>
                     <el-button type="primary" plain @click="editBox(item.id,'edit')">编辑</el-button>
                     <el-button type="danger" plain @click="delRecruit(item.id)">删除</el-button>
                 </div>
@@ -147,6 +148,11 @@ export default {
                             console.log(res)
                             this.content=this.newHtml=this.disc=this.title=this.id=''
                             this.drawer=false
+                            http.get(`/readrecruit?page=${this.page}`)
+                                .then(res2=>{
+                                    // console.log(res2.data)
+                                    this.recruits=res2.data
+                                })
                         })
                 }else if(this.type==='编辑'){
                     const query2={
@@ -161,14 +167,13 @@ export default {
                             console.log(res)
                             this.content=this.newHtml=this.disc=this.title=this.id=''
                             this.drawer=false
+                            http.get(`/readrecruit?page=${this.page}`)
+                                .then(res2=>{
+                                    // console.log(res2.data)
+                                    this.recruits=res2.data
+                                })
                         })
                 }
-                
-                http.get(`/readrecruit?page=${this.page}`)
-                    .then(res=>{
-                        console.log(res.data)
-                        this.recruits=res.data
-                    })
             }
         }
     },

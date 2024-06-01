@@ -8,7 +8,8 @@
                         <h5 style="font-size: 120%;">{{ item.title }}</h5>
                         <div class="d-flex justify-content-between">
                             <div>{{ item.summary }}</div>
-                            <small class="d-flex align-items-center" style="font-size: 80%;"><el-icon><View /></el-icon>{{  item.click  }}</small>
+                            <div></div>
+                            <!-- <small class="d-flex align-items-center" style="font-size: 80%;"><el-icon><View /></el-icon>{{  item.click  }}</small> -->
                         </div>
                     </div>
                 </el-card>

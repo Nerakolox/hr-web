@@ -76,6 +76,27 @@ export default {
                         http.post('/signup',query)
                             .then(res=>{
                                 this.isRes=false
+                                const query = {
+                                    telephone:this.ruleForm.phone,
+                                    authcode:this.ruleForm.code
+                                }
+                                http.post('/login',query)
+                                    .then(res2=>{
+                                        // console.log(res.data,Cookie)
+                                        Cookie.set('token',res2.data.token)
+                                        
+                                        userStore().writeUsername(res2.data.username)
+                                        userStore().writeTelephone(res2.data.telephone)
+                                        userStore().writeAdmin(res2.data.admin)
+
+                                        // console.log(res.data,userStore())
+                                        if(userStore().admin){
+                                            this.$router.push({path:'/admin'})
+                                        }else{
+                                            this.$router.push({path:'/user'})
+                                        }
+                                        // this.$router.push({path:'/admin'})
+                                    })
                             })
                     }else{//登录
                         const query = {
@@ -98,9 +119,6 @@ export default {
                                     this.$router.push({path:'/user'})
                                 }
                                 // this.$router.push({path:'/admin'})
-                            })
-                            .catch(err=>{
-
                             })
                     }
                 } else {
