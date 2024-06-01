@@ -138,10 +138,28 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="招聘信息点击统计" name="招聘信息点击统计">
+                <el-form :inline="true" :model="query" class="demo-form-inline">
+                    <el-form-item label="手机号">
+                        <el-input v-model="query.phone" placeholder="请输入手机号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="招聘信息标题">
+                        <el-input v-model="query.title" placeholder="请输入招聘信息标题"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="changeRecruitPage" plain>查询</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="info" plain @click="clearQuery">重置筛选条件</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="success" plain @click="exportToExcel">导出XSLX</el-button>
+                    </el-form-item>
+                </el-form>
                 <el-table :data="recruitData" stripe border style="max-width: 100%;width: 100%;">
                     <el-table-column fixed prop="Username" label="姓名"></el-table-column>
-                    <el-table-column fixed prop="Telephone" label="电话"></el-table-column>
+                    <el-table-column fixed prop="Telephone" label="手机号"></el-table-column>
                     <el-table-column prop="CreatedAt" label="日期"></el-table-column>
+                    <el-table-column prop="Title" label="标题"></el-table-column>
                 </el-table>
                 <div class="mt-2 d-flex">
                     <el-pagination class="ms-auto" background layout="prev, pager, next" v-model:current-page="recruitPage" :total="recruitTotal" @current-change="changeRecruitPage"/>
@@ -156,6 +174,8 @@
   
 <script>
 import http from '../../utils/axios'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 export default {
     components:{
         
@@ -172,6 +192,10 @@ export default {
             recruitPage:1,
             recruitTotal:0,
             recruitData:[],
+            query:{
+                phone:'',
+                title:''
+            }
         }
     },
     mounted(){
@@ -218,17 +242,49 @@ export default {
                 })
         },
         changeRecruitPage(){
-            http.get(`/recruitreader?page=${this.recruitPage}`)
+            http.get(`/recruitreader?page=${this.recruitPage}${this.query.title!=''?`&title=${this.query.title}`:''}${this.query.phone!=''?`&telephone=${this.query.phone}`:''}`)
                 .then(res=>{
                     // console.log(res.data)
                     this.recruitData=res.data
                     this.recruitTotal=res.total
                 })
         },
+        exportToExcel() {
+            const ws = XLSX.utils.json_to_sheet(this.recruitData)
+            const wb = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
+
+            // 生成XLSX文件的blob
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' })
+            function s2ab(s) {
+            const buf = new ArrayBuffer(s.length)
+            const view = new Uint8Array(buf)
+            for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF
+                return buf
+            }
+            // 保存文件
+            saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), `招聘信息查看表${this.formatDate()}.xlsx`)
+        },
+        formatDate() {
+            const date = new Date()
+            const year = date.getFullYear()
+            const month = (date.getMonth() + 1).toString().padStart(2, '0')
+            const day = date.getDate().toString().padStart(2, '0')
+            const hour = date.getHours().toString().padStart(2, '0')
+            const minute = date.getMinutes().toString().padStart(2, '0')
+            return `${year}-${month}-${day} ${hour}时${minute}分`
+        },
+        clearQuery(){
+            this.query={
+                phone:'',
+                title:''
+            }
+            this.changeRecruitPage()
+        },
     }
 }
 </script>
-  
+
 <style scoped>
   
 </style>
