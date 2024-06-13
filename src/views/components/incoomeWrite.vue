@@ -171,8 +171,15 @@ export default {
                 callback: action => {
                     if(action=='confirm'){
                         const query = this.tableData
-                        // console.log(query)
-                        http.post('addsalary',query)
+                        const stringifyValues = (data) => {
+                            return JSON.parse(JSON.stringify(data, (key, value) => {
+                                return (typeof value === 'number' || typeof value === 'boolean') ? value.toString() : value;
+                            }));
+                        };
+
+                        const stringifiedData = stringifyValues(query)
+                        console.log(stringifiedData)
+                        http.post('addsalary',stringifiedData)
                             .then(res=>{
                                 console.log(res)
                                 // console.log(this.tableData)
@@ -213,27 +220,27 @@ export default {
                     // 转换数据格式并添加日期
                     const formattedData = tableData.map((row) => {
                         const obj = {
-                            Username: row[0].toString(),
-                            Certificate: row[1].toString(),
-                            CreditCard: row[2].toString(),
-                            Telephone: row[3].toString(),
-                            BasicSalary: row[4].toString(),
-                            AttendanceRequired: row[5].toString(),
-                            AttendanceActual: row[6].toString(),
-                            WorkHour: row[7].toString(),
-                            Performance: row[8].toString(),
-                            Allowance: row[9].toString(),
-                            Subsidy: row[10].toString(),
-                            OvertimeSalary: row[11].toString(),
-                            Excitation: row[12].toString(),
-                            Discipline: row[13].toString(),
-                            Withholding: row[14].toString(),
-                            BackPayment: row[15].toString(),
-                            ShouldSalary: row[16].toString(),
-                            UtilitiesFee: row[17].toString(),
-                            Tax: row[18].toString(),
-                            AdvanceSalary: row[19].toString(),
-                            ActualSalary: row[20].toString(),
+                            Username: row[0],
+                            Certificate: row[1],
+                            CreditCard: row[2],
+                            Telephone: row[3],
+                            BasicSalary: row[4],
+                            AttendanceRequired: row[5],
+                            AttendanceActual: row[6],
+                            WorkHour: row[7],
+                            Performance: row[8],
+                            Allowance: row[9],
+                            Subsidy: row[10],
+                            OvertimeSalary: row[11],
+                            Excitation: row[12],
+                            Discipline: row[13],
+                            Withholding: row[14],
+                            BackPayment: row[15],
+                            ShouldSalary: row[16],
+                            UtilitiesFee: row[17],
+                            Tax: row[18],
+                            AdvanceSalary: row[19],
+                            ActualSalary: row[20],
                             Date: `${year}-${month}` // 添加当前年月
                         };
                         return obj
@@ -242,10 +249,10 @@ export default {
                     // this.tableData=formattedData
                     this.tableData2=formattedData
                     const content=`
-                        <div>
-                            <div>读取内容如下，是否加载到工作表中。<strong>此操作会覆盖工作表，请谨慎确定！</strong></div>
-                            <div>表头：${dataExcel[0]}</div>
-                            <div>第一行：${dataExcel[1]}</div>
+                        <div style="word-wrap: break-word;max-width:400px;">
+                            <p style="word-wrap: break-word;">读取内容如下，是否加载到工作表中。<strong>此操作会覆盖工作表，请谨慎确定！</strong></p>
+                            <p style="word-wrap: break-word;">表头：${dataExcel[0]}</p>
+                            <p style="word-wrap: break-word;">第一行：${dataExcel[1]}</p>
                         </div>
                     `
                     this.$alert(`${content}`,'内容阅览', {
@@ -263,7 +270,7 @@ export default {
                         }
                     })
                 } catch (error) {
-                    ElMessage({
+                    this.$message({
                         message: `读取或处理Excel文件时出错：${error}`,
                         type: 'error',
                         plain: true,
