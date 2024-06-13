@@ -115,13 +115,13 @@
                             <el-input v-model="scope.row.ActualSalary" />
                         </template> -->
                     </el-table-column>
-                    <!-- <el-table-column fixed="right" label="操作">
+                    <el-table-column fixed="right" label="操作">
                         <template #default="scope">
-                            <el-button type="danger" size="small" @click="delRow(scope)">
+                            <el-button type="danger" size="small" @click="delSalary(scope)">
                                 删除
                             </el-button>
                         </template>
-                    </el-table-column> -->
+                    </el-table-column>
                 </el-table>
                 <div class="mt-2 d-flex">
                     <el-pagination class="ms-auto" background layout="prev, pager, next" v-model:current-page="incomePage" :total="incomeTotal" @current-change="changeIncomePage"/>
@@ -281,6 +281,9 @@ export default {
             }
             this.changeRecruitPage()
         },
+        delSalary(scope){
+            console.log(scope)
+        }
     }
 }
 </script>

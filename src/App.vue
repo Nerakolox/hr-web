@@ -4,6 +4,7 @@
 
 <script>
 import {appStore} from './stores/store'
+import Cookies from 'js-cookie'
 export default {
     components:{
         
@@ -29,6 +30,12 @@ export default {
           appStore().changeMobileStatus(false)
         }
         console.log(appStore().isMobile)
+      },
+      getAdminInfo(){
+        const token = Cookies.get('token')
+        if (token) {
+          
+        }
       }
     }
 }
