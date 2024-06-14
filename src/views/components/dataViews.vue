@@ -117,7 +117,7 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作">
                         <template #default="scope">
-                            <el-button type="danger" size="small" @click="delSalary(scope)">
+                            <el-button type="danger" size="small" @click="delSalary(scope,index)">
                                 删除
                             </el-button>
                         </template>
@@ -282,7 +282,16 @@ export default {
             this.changeRecruitPage()
         },
         delSalary(scope){
-            console.log(scope)
+            console.log(scope.row.ID,scope.$index)
+            http.get(`/delete/salary?id=${scope.row.ID}`)
+                .then(res2=>{
+                    http.get(`/allsalary?page=${this.incomePage}`)
+                        .then(res=>{
+                            // console.log(res.data)
+                            this.incomeData=res.data
+                            this.incomeTotal=res.total
+                        })
+                })
         }
     }
 }

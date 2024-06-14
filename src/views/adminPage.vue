@@ -37,10 +37,8 @@ export default {
         }
     },
     mounted(){
-        if(this.$route.path==='/admin'&&userStore().admin){
+        if(this.$route.path==='/admin'){
             this.$router.push({path:'/admin/incoomeWrite'})
-        }else{
-            this.$router.push({path:'/user'})
         }
     },
     beforeUnmount() {

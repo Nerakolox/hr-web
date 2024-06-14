@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import {appStore} from './stores/store'
+import {appStore,userStore} from './stores/store'
 import Cookies from 'js-cookie'
+import http from './utils/axios'
 export default {
     components:{
         
@@ -17,6 +18,7 @@ export default {
     mounted(){
       this.getPageWidth()
       window.addEventListener('resize', this.getPageWidth)
+      this.getAdminInfo()
     },
     beforeUnmount() {
       window.removeEventListener('resize', this.getPageWidth)
@@ -34,7 +36,19 @@ export default {
       getAdminInfo(){
         const token = Cookies.get('token')
         if (token) {
-          
+          http.get('/userinfo')
+            .then(res=>{
+                // console.log(res.data,Cookies)
+                // Cookies.set('token',res.data.token)
+                
+                userStore().writeUsername(res.data.username)
+                userStore().writeTelephone(res.data.telephone)
+                userStore().writeAdmin(res.data.admin)
+
+                if(!userStore().admin){
+                  this.$router.push({path:'/user'})
+                }
+            })
         }
       }
     }
